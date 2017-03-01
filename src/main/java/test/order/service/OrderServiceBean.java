@@ -44,26 +44,14 @@ public class OrderServiceBean implements OrderSerivce {
     OrderDetailService orderDetailService;
     @Autowired
     PaymentService paymentService;
-
-    @Autowired
-    OrderMenuService orderMenuService;
-
-    @Autowired
-    OrderShopService orderShopService;
-
     @Autowired
     BillingService billingService;
-
     @Autowired
     OrderRepository orderRepository;
 
     @Transactional
     @Override
     public String createOrder(OrderRequestDto orderRequest) {
-
-        orderMenuService.validation();
-
-        orderShopService.validation();
 
         //todo 주문번호 랜덤생성기능
         String orderNo = String.valueOf(new Date().getTime());

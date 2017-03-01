@@ -3,25 +3,24 @@ package test.order.api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import test.order.common.config.CommonConfig;
 import test.order.common.exception.ClientRuntimeException;
 import test.order.common.exception.OrderRuntimeException;
-import test.order.domain.Order;
 import test.order.domain.dto.OrderRequestDto;
 import test.order.domain.dto.OrderRequestResult;
 import test.order.domain.dto.PaymentDto;
 import test.order.domain.dto.billing.BillingRequestResult;
 import test.order.repository.OrderRepository;
 import test.order.service.BillingService;
+import test.order.service.OrderMenuService;
 import test.order.service.OrderSerivce;
+import test.order.service.OrderShopService;
 
 import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * Created by yongjunjung on 2017. 3. 1..
@@ -41,6 +40,11 @@ public class OrderController {
     @Autowired
     OrderRepository orderRepository;
 
+    @Autowired
+    OrderMenuService orderMenuService;
+    @Autowired
+    OrderShopService orderShopService;
+
     /**
      * Created by yongjunjung on 2017. 3. 1.
      * 주문생성
@@ -58,7 +62,7 @@ public class OrderController {
         String orderNo = orderSerivce.createOrder(orderRequestDto);
 
         //3.반환
-        return new OrderRequestResult(config.getPaymentUrl()+"/"+orderNo);
+        return new OrderRequestResult(config.getPaymentUrl() + "/" + orderNo);
     }
 
     @ResponseStatus(CREATED)
@@ -86,6 +90,10 @@ public class OrderController {
      */
     private void validateRequest(@RequestBody OrderRequestDto orderRequestDto) throws Exception {
 
+        orderMenuService.validation();
+
+        orderShopService.validation();
+
         if (!orderRequestDto.getAmount().equals(orderRequestDto.getOrderDetailRequestDtoSum())) {
             logger.info("orderRequestDto.getAmount()={} , sum={}", orderRequestDto.getAmount(), orderRequestDto.getOrderDetailRequestDtoSum());
             throw new ClientRuntimeException("4001", "주문금액합계 불일치");
@@ -94,11 +102,11 @@ public class OrderController {
         PaymentDto paymentDto = orderRequestDto.getPayment();
 
         if (!orderRequestDto.getPaymentDtoAmount().equals(paymentDto.getAmount())) {
-            throw new ClientRuntimeException("4002","주문금액 결제금액 불일치");
+            throw new ClientRuntimeException("4002", "주문금액 결제금액 불일치");
         }
 
         if (!paymentDto.getPaymentDetailDtoAmountSum().equals(paymentDto.getAmount())) {
-            throw new ClientRuntimeException("4003","결제금액합계 불일치");
+            throw new ClientRuntimeException("4003", "결제금액합계 불일치");
         }
     }
 
