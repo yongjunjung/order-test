@@ -1,0 +1,76 @@
+#Default
+spring.profiles.active:  local
+server.port: 12003
+
+#info.build:
+#  groupId: ${project.groupId}
+#  artifact: ${project.artifactId}
+#  name: ${project.name}
+#  description: ${project.description}
+#  version: ${project.version}
+
+
+spring.jpa:
+  open-in-view: false #service는 OSIV를 사용하지 않는다.
+  properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+spring.jpa.properties:
+  hibernate.show_sql:  false
+  hibernate.format_sql:  false
+  hibernate.use_sql_comments:  true
+
+robots-txt.enabled: true
+
+billing:
+  host: http://localhost:12002
+  requestUrl: ${billing.host}/v2/pay/request
+  approveUrl: ${billing.host}/v2/pay/approve
+  cancelUrl: ${billing.host}/v2/pay/cancel/
+  serviceKey: e7f1970b-68f2-4168-b128-b1239589af08
+
+#billing:
+#  host: https://dev-billing.baemin.com
+#  requestUrl: ${billing.host}/v2/pay/request
+#  approveUrl: ${billing.host}/v2/pay/approve
+#  cancelUrl: ${billing.host}/v2/pay/cancel/
+#  serviceKey: e7f1970b-68f2-4168-b128-b1239589af08
+
+order:
+  host: http://localhost:12003
+  returnUrl: ${order.host}/order/return
+  resultUrl: ${order.host}/order/result
+
+http.connection-manager:
+  max-total: 2000
+  max-per-host: 1000
+
+---
+spring:
+  profiles: local
+
+#spring.datasource:
+#  url: jdbc:mysql://b2c-order.cbopabdh50kn.ap-northeast-2.rds.amazonaws.com:3306/ord
+#  username: b2c
+#  password: qwer1234
+#  driver-class-name: org.mariadb.jdbc.Driver
+
+#Connection
+spring.datasource:
+  url: jdbc:h2:tcp://localhost/~/ord;MVCC=TRUE
+  username: sa
+  password:
+  driver-class-name: org.h2.Driver
+
+---
+spring:
+  profiles: dev
+
+#Connection
+spring.datasource:
+  url: jdbc:mysql://b2c-order.cbopabdh50kn.ap-northeast-2.rds.amazonaws.com:3306/ord
+  username: b2c
+  password: qwer1234
+  driver-class-name: org.mariadb.jdbc.Driver
+
+
+

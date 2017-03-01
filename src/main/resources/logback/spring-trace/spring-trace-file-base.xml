@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+spring trace
+-->
+<included>
+
+    <include resource="logback/spring-trace/app-error-appender.xml"/>
+    <include resource="logback/spring-trace/slow-logic-appender.xml"/>
+    <include resource="logback/spring-trace/trace-appender.xml"/>
+
+    <!-- 실시간 TRACE -->
+    <logger name="TRACE" level="trace" additivity="false">
+        <appender-ref ref="TRACE"/>
+    </logger>
+    <!-- 애플리케이션 예외 -->
+    <logger name="APP_ERROR" level="info" additivity="false">
+        <appender-ref ref="APP_ERROR"/>
+    </logger>
+    <!-- 느린 로직 -->
+    <logger name="SLOW_LOGIC" level="info" additivity="false">
+        <appender-ref ref="SLOW_LOGIC"/>
+    </logger>
+
+</included>
