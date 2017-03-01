@@ -6,27 +6,17 @@ package test.order.domain.dto;
 
 public class OrderRequestResult {
 
-    private String returnUrl;
-    private String orderNo;
-
-    public OrderRequestResult(String returnUrl, String orderNo) {
-        this.returnUrl = returnUrl;
-        this.orderNo = orderNo;
+    public OrderRequestResult(String paymentUrl) {
+        this.paymentUrl = paymentUrl;
     }
 
-    public String getReturnUrl() {
-        return returnUrl;
+    private String paymentUrl;
+
+    public String getPaymentUrl() {
+        return paymentUrl;
     }
 
-    public void setReturnUrl(String returnUrl) {
-        this.returnUrl = returnUrl;
-    }
-
-    public String getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
+    public void setPaymentUrl(String paymentUrl) {
+        this.paymentUrl = paymentUrl;
     }
 }

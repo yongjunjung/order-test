@@ -49,13 +49,12 @@ public class BillingService {
     OrderRepository orderRepository;
 
 
-    public BillingPayDto buildBillingRequest(String orderNo) {
+    public BillingPayDto buildBillingRequest(Order order) {
 
         //todo 밖에서 데이터 바인딩을 하고 billingpayDto를 입력 받는 것으로 바꿀것
-        Order order = orderRepository.findRequestByOrderNo(orderNo);
 
         BillingPayDto billingPayDto = new BillingPayDto();
-        billingPayDto.setServiceId("baropay");
+        billingPayDto.setServiceId(order.getServiceId());
         billingPayDto.setSite("app");
         billingPayDto.setUserId(order.getUserId());
         billingPayDto.setUserName(order.getUserId());
@@ -66,8 +65,8 @@ public class BillingService {
         billingPayDto.setUserAddr(order.getAddress());
         billingPayDto.setUserIp("127.0.0.1");
         billingPayDto.setItemName("테스트테스트");
-        billingPayDto.setMerchantKey("2222");
-        billingPayDto.setResultUrl(commonConfig.getResultUrl(), orderNo);
+//        billingPayDto.setMerchantKey("2222");
+        billingPayDto.setResultUrl(commonConfig.getResultUrl(), order.getOrderNo());
         billingPayDto.setReturnUrl(commonConfig.getReturnUrl());
         billingPayDto.setCloseUrl("http://betapurch2.baemin.com/billing_bera/order_result");
         billingPayDto.setEtc1("");
@@ -97,7 +96,13 @@ public class BillingService {
     @Transactional
     public BillingRequestResult request(String orderNo) throws IOException {
 
-        BillingPayDto billingPayDto = buildBillingRequest(orderNo);
+        Order order = orderRepository.findRequestByOrderNo(orderNo);
+
+        if (order == null) {
+            throw new OrderRuntimeException("50001","결제 가능한 주문이 아닙니다.");
+        }
+
+        BillingPayDto billingPayDto = buildBillingRequest(order);
 
         try {
             BillingRequestReturnDto returnDto = restTemplate.postForObject(billingConfig.getRequestUrl(), setParameter(billingPayDto), BillingRequestReturnDto.class);

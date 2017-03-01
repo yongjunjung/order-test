@@ -16,6 +16,8 @@ public class CommonConfig {
     private String returnUrl;
     @NotEmpty
     private String resultUrl;
+    @NotEmpty
+    private String paymentUrl;
 
     public String getReturnUrl() {
         return returnUrl;
@@ -31,5 +33,13 @@ public class CommonConfig {
 
     public void setResultUrl(String resultUrl) {
         this.resultUrl = resultUrl;
+    }
+
+    public String getPaymentUrl() {
+        return paymentUrl;
+    }
+
+    public void setPaymentUrl(String paymentUrl) {
+        this.paymentUrl = paymentUrl;
     }
 }

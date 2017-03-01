@@ -23,7 +23,7 @@ robots-txt.enabled: true
 
 billing:
   host: http://localhost:12002
-  requestUrl: ${billing.host}/v2/pay/request
+  requestUrl: ${billing.host}/v2/pay/request/
   approveUrl: ${billing.host}/v2/pay/approve
   cancelUrl: ${billing.host}/v2/pay/cancel/
   serviceKey: e7f1970b-68f2-4168-b128-b1239589af08
@@ -39,6 +39,7 @@ order:
   host: http://localhost:12003
   returnUrl: ${order.host}/order/return
   resultUrl: ${order.host}/order/result
+  paymentUrl: ${order.host}/order/payment
 
 http.connection-manager:
   max-total: 2000
